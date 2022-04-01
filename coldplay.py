@@ -20,7 +20,7 @@ stop_words = [
 words = []
 
 # get the top word in a subreddit
-for submission in subreddit.top(limit=10):
+for submission in subreddit.top(limit=1000):
     submission.comments.replace_more(limit=0)
     for top_level_comment in submission.comments:
         word = ""
@@ -43,12 +43,12 @@ top_words = []
 top_count = []
 
 while i < 10:
-    top_words.append(top_list[i])
-    top_count.append(words.count(top_list[i]))
-    # print(top_list[i], words.count(top_list[i]))
+    # top_words.append(top_list[i])
+    # top_count.append(words.count(top_list[i]))
+    print(top_list[i], words.count(top_list[i]))
     i+=1
 
 
-plt.title('Top 10 words in the subreddit: ' + subreddit.display_name)
-plt.pie(top_count, labels=top_words, autopct='%1.1f%%')
-plt.show()
+# plt.title('Top 10 words in the subreddit: ' + subreddit.display_name)
+# plt.pie(top_count, labels=top_words, autopct='%1.1f%%')
+# plt.show()
