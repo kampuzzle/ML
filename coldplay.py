@@ -1,4 +1,7 @@
+import collections
+import itertools
 import praw 
+import matplotlib.pyplot as plt
 
 reddit = praw.Reddit(
     client_id ='wbzA3Ai8w2dT3MAltsMG-g', 
@@ -17,20 +20,35 @@ stop_words = [
 words = []
 
 # get the top word in a subreddit
-for submission in subreddit.top(limit=1):
+for submission in subreddit.top(limit=10):
     submission.comments.replace_more(limit=0)
     for top_level_comment in submission.comments:
         word = ""
         for letter in top_level_comment.body:
             if letter == ' ':
-                if not word.lower() in stop_words and word.isalpha():
+                if not word.lower() in stop_words and word.isalnum():
                     words.append(word)
                 word = ""
             else:
                 word += letter
 
 
+counts = collections.Counter(words)
+list(itertools.chain.from_iterable([[k for _ in range(counts[k])] for k in sorted(counts, key=counts.__getitem__, reverse=True)]))
 
-for word in words:
-    print(word)
+top_list = sorted(counts, key=counts.__getitem__, reverse=True)
 
+i = 0
+top_words = []
+top_count = []
+
+while i < 10:
+    top_words.append(top_list[i])
+    top_count.append(words.count(top_list[i]))
+    # print(top_list[i], words.count(top_list[i]))
+    i+=1
+
+
+plt.title('Top 10 words in the subreddit: ' + subreddit.display_name)
+plt.pie(top_count, labels=top_words, autopct='%1.1f%%')
+plt.show()
