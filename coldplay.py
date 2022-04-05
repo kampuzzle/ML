@@ -50,6 +50,8 @@ i = 0
 top_words = []
 top_count = []
 
+dict = {}
+
 while i < top_N:
     top_words.append(top_list[i])
     top_count.append(words.count(top_list[i]))
